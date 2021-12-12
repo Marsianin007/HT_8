@@ -72,6 +72,10 @@ def banknotes_to_get(sum_to_get, username):
             banknotes_dict["10"] = int(banknotes_dict["10"]) - 1
             sum_to_get -= 10
 
+        if sum_to_get != 0:
+            print("Нажаль банкомат не може видасти потрібну сумму, спробуйте змінити сумму\n")
+            get_money(username)
+
     with open("banknotes.data", "w") as banknotes_file:
         json.dump(banknotes_dict, banknotes_file)
 

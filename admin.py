@@ -46,7 +46,7 @@ def admin_menu():
         with open("banknotes.data", "r") as banknotes_file:
             banknotes = json.load(banknotes_file)
         change_quantity(banknotes)
-    
+
 
 def add_new_user(username, password):
     with open("users.data", "r") as users_file:

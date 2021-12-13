@@ -18,6 +18,7 @@ def change_quantity(banknotes):
             change_quantity(banknotes)
     else:
         print("Введіть будь-ласка число!")
+        change_quantity(banknotes)
 
     with open("banknotes.data", "w") as banknotes_file:
         if nominal in banknotes.keys():
@@ -26,6 +27,9 @@ def change_quantity(banknotes):
             action = input("Ваш вибір: ")
             if action == "1":
                 change_quantity(banknotes)
+            else:
+                json.dump(banknotes, banknotes_file)
+                raise SystemExit
 
         else:
             print("Такого номіналу не існує, спробуйте знову")

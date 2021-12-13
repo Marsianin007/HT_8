@@ -2,6 +2,72 @@ import json
 import time
 from admin import admin_menu, write_time_and_action
 
+def greedy_method(sum_to_get, username):
+    with open("banknotes.data", "r") as banknotes_file:
+        banknotes_dict = json.load(banknotes_file)
+        uah_10 = uah_20 = uah_50 = uah_100 = uah_200 = uah_500 = uah_1000 = 0
+        #print(sum_to_get)
+
+        while sum_to_get >= 1000 and int(banknotes_dict["1000"]) > 0:
+            uah_1000 += 1
+            banknotes_dict["1000"] = int(banknotes_dict["1000"]) - 1
+            sum_to_get -= 1000
+
+        while sum_to_get >= 500 and int(banknotes_dict["500"]) > 0:
+            uah_500 += 1
+            banknotes_dict["500"] = int(banknotes_dict["500"]) - 1
+            sum_to_get -= 500
+
+        while sum_to_get >= 200 and int(banknotes_dict["200"]) > 0:
+            uah_200 += 1
+            banknotes_dict["200"] = int(banknotes_dict["200"]) - 1
+            sum_to_get -= 200
+
+        while sum_to_get >= 100 and int(banknotes_dict["100"]) > 0:
+            uah_100 += 1
+            banknotes_dict["100"] = int(banknotes_dict["100"]) - 1
+            sum_to_get -= 100
+
+        while sum_to_get >= 50 and int(banknotes_dict["50"]) > 0:
+            uah_50 += 1
+            banknotes_dict["50"] = int(banknotes_dict["50"]) - 1
+            sum_to_get -= 50
+
+        while sum_to_get >= 20 and int(banknotes_dict["20"]) > 0:
+            uah_20 += 1
+            banknotes_dict["20"] = int(banknotes_dict["20"]) - 1
+            sum_to_get -= 20
+
+        while sum_to_get >= 10 and int(banknotes_dict["10"]) > 0:
+            uah_10 += 1
+            banknotes_dict["10"] = int(banknotes_dict["10"]) - 1
+            sum_to_get -= 10
+
+    with open("banknotes.data", "w") as banknotes_file:
+        json.dump(banknotes_dict, banknotes_file)
+
+    if sum_to_get != 0 and sum(map(int, banknotes_dict.values())) != 0:
+        print("Нажаль банкомат не може видасти потрібну сумму, спробуйте змінити сумму\n")
+        get_money(username)
+
+    elif sum_to_get != 0 and sum(map(int, banknotes_dict.values())) == 0:
+        print("Нажаль банкомат не має грошей\n")
+        start_menu(username)
+
+
+
+    else:
+
+        if uah_1000 != 0: print("1000 - " + str(uah_1000))
+        if uah_500 != 0: print("500 - " + str(uah_500))
+        if uah_200 != 0: print("200 - " + str(uah_200))
+        if uah_100 != 0: print("100 - " + str(uah_100))
+        if uah_50 != 0: print("50 - " + str(uah_50))
+        if uah_20 != 0: print("20 - " + str(uah_20))
+        if uah_10 != 0: print("10 - " + str(uah_10))
+
+        start_menu(username)
+
 
 
 def check_balance(username):
@@ -53,7 +119,7 @@ def exit_from_func(sum_to_get, nominal, variable, username):
             return sum_to_get, variable
 
 def banknotes_to_get(sum_to_get, username):
-
+    copy_sum_to_get = sum_to_get
     with open("banknotes.data", "r") as banknotes_file:
         banknotes_dict = json.load(banknotes_file)
         uah_10 = uah_20 = uah_50 = uah_100 = uah_200 = uah_500 = uah_1000 = 0
@@ -89,8 +155,6 @@ def banknotes_to_get(sum_to_get, username):
             sum_to_get -= 50
         sum_to_get, uah_50 = exit_from_func(sum_to_get, 50, uah_50, username)
 
-
-
         while sum_to_get >= 20 and int(banknotes_dict["20"]) > 0:
             uah_20 += 1
             banknotes_dict["20"] = int(banknotes_dict["20"]) - 1
@@ -103,24 +167,27 @@ def banknotes_to_get(sum_to_get, username):
             sum_to_get -= 10
         sum_to_get, uah_10 = exit_from_func(sum_to_get, 10, uah_10, username)
 
-        if sum_to_get != 0:
-            print("Нажаль банкомат не може видасти потрібну сумму, спробуйте змінити сумму\n")
-            get_money(username)
+    if sum_to_get != 0:
+        greedy_method(copy_sum_to_get, username)
+    else:
+            #print("Нажаль банкомат не може видасти потрібну сумму, спробуйте змінити сумму\n")
+            #get_money(username)
 
-    with open("banknotes.data", "w") as banknotes_file:
-        json.dump(banknotes_dict, banknotes_file)
+        with open("banknotes.data", "w") as banknotes_file:
+            json.dump(banknotes_dict, banknotes_file)
 
-    #print(banknotes_dict)
-    if uah_1000 != 0: print("1000 - " + str(uah_1000))
-    if uah_500 != 0: print("500 - " + str(uah_500))
-    if uah_200 != 0: print("200 - " + str(uah_200))
-    if uah_100 != 0: print("100 - " + str(uah_100))
-    if uah_50 != 0: print("50 - " + str(uah_50))
-    if uah_20 != 0: print("20 - " + str(uah_20))
-    if uah_10 != 0: print("10 - " + str(uah_10))
+        #print(banknotes_dict)
+
+        if uah_1000 != 0: print("1000 - " + str(uah_1000))
+        if uah_500 != 0: print("500 - " + str(uah_500))
+        if uah_200 != 0: print("200 - " + str(uah_200))
+        if uah_100 != 0: print("100 - " + str(uah_100))
+        if uah_50 != 0: print("50 - " + str(uah_50))
+        if uah_20 != 0: print("20 - " + str(uah_20))
+        if uah_10 != 0: print("10 - " + str(uah_10))
 
 
-    start_menu(username)
+        start_menu(username)
 
 
 def get_money(username):

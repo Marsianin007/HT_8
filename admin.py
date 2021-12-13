@@ -48,22 +48,36 @@ def admin_menu():
         change_quantity(banknotes)
 
 
-def add_new_user(username, password):
+'''def add_new_user():
     with open("users.data", "r") as users_file:
-        users_list = json.load(users_file)
-        pair_name_pass = {username : password}
-        users_list.append(pair_name_pass)
+        users = json.load(users_file)
+        username = input("Введіть логін: ")
+        password = input("Введіть ваш пароль:")
+        for i in users:
+            if username in i.keys():
+                print("Такий логін вже існує")
+                add_new_user()
 
-    with open("users.data", "w") as users_file:
-        json.dump(users_list, users_file)
+        with open("users.data", "r") as users_file:
+            users_list = json.load(users_file)
+            pair_name_pass = {username : password}
+            users_list.append(pair_name_pass)
 
-    with open("{}_balance.data".format(username), "w") as balance_file:
-        balance_file.write("0")
+        with open("users.data", "w") as users_file:
+            json.dump(users_list, users_file)
 
-    with open("{}_transactions.data".format(username), "w") as transactions_file:
-        time_local = time.localtime()
-        time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time_local)
-        transactions_file.write(r"{} Date of create\n".format(time_string))
+        with open("{}_balance.data".format(username), "w") as balance_file:
+            balance_file.write("0")
+
+        with open("{}_transactions.data".format(username), "w") as transactions_file:
+            time_local = time.localtime()
+            time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time_local)
+            transactions_file.write(r"{} Date of create\n".format(time_string))
+            
+    print("Реєстрація успішна")
+    login_menu()
+    
+'''
 
 def write_time_and_action(action, username):
     with open("{}_transactions.data".format(username), "a") as transactions_file:

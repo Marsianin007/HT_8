@@ -38,20 +38,18 @@ def exit_from_func(sum_to_get, nominal, variable, username):
         banknotes_dict = json.load(banknotes_file)
         list = [10, 20, 50, 100, 200, 500, 1000]
         check = True
-        for i in list:
-            if sum_to_get % i == 0 and int(banknotes_dict[str(i)]) > 0:
-                check = False
-        if check:
-            #print(nominal)
-            #print(variable)
-            sum_to_get += nominal * variable
-            #print("check = True")
-            #print(sum_to_get)
-            #banknotes_to_get(sum_to_get, username)
-            #return nominal
+        while check and variable != 0:
+            for i in list:
+                if sum_to_get % i == 0 and int(banknotes_dict[str(i)]) > 0:
+                    check = False
 
+            if check: sum_to_get += nominal; variable -= 1
+
+        if check:
+            #print("Сработал чек" + str(nominal))
             return sum_to_get, 0
         else:
+            #print("Сработал else" + str(sum_to_get))
             return sum_to_get, variable
 
 def banknotes_to_get(sum_to_get, username):
@@ -121,6 +119,7 @@ def banknotes_to_get(sum_to_get, username):
     if uah_20 != 0: print("20 - " + str(uah_20))
     if uah_10 != 0: print("10 - " + str(uah_10))
 
+
     start_menu(username)
 
 
@@ -137,6 +136,7 @@ def get_money(username):
         get_money(username)
     with open("{}_balance.data".format(username), "r") as username_balance:
         user_balance = json.load(username_balance)
+
         if sum_to_get > int(user_balance):
             print("Недостятньо коштів...")
             start_menu(username)
@@ -193,6 +193,7 @@ def start_menu(username):
         if number_from_user == 4:
             print("До зустрічі {}!".format(username))
             write_time_and_action("exit", username)
+            raise SystemExit
         if number_from_user < 1 or number_from_user > 4:
             print("Дії з таким номером не існує")
             start_menu(username)

@@ -166,8 +166,8 @@ def login_menu():
                     start_menu(username)
             if entrance_flag == False:
                 print("Перевірте логін та пароль\nАбо якщо бажаєто зареєструватись, натисніть '1', інакше будь-який символ\n")
-                num = int(input("Ваш вибір:"))
-                if num == 1:
+                num = input("Ваш вибір:")
+                if num == "1":
                     add_new_user()
                 else:
                     login_menu()

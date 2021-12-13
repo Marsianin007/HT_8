@@ -11,7 +11,13 @@ def change_quantity(banknotes):
 
     nominal = input("Введіть номінал купюру, кількість якої треба змінити: ")
     quantity = input("Введіть потрібну кількість: ")
-
+    if quantity.isdigit():
+        quantity = int(quantity)
+        if quantity < 0:
+            print("Неправильна кількість:")
+            change_quantity(banknotes)
+    else:
+        print("Введіть будь-ласка число!")
 
     with open("banknotes.data", "w") as banknotes_file:
         if nominal in banknotes.keys():
